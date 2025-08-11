@@ -1,0 +1,285 @@
+{
+  "name": "Supervisor agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "ce91e33d-b4e9-4504-897a-a5c0177075a5",
+      "name": "When chat message received",
+      "webhookId": "259081ef-e490-4d37-94a8-925e73cd18fd"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        48,
+        224
+      ],
+      "id": "738104c0-969a-497f-bc85-15c2e469de18",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "nZwNcWQuDyu7SR95",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        176,
+        224
+      ],
+      "id": "8eff20e6-640e-46eb-8623-04b45af44ad0",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        304,
+        224
+      ],
+      "id": "ff3aa884-d315-46b4-9ad5-2d0f647cd9ec",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        672,
+        224
+      ],
+      "id": "3dc1ae36-ae82-4047-879a-d9a43e36ac8f",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "UQVfyjBtXSNCmE4C",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=#Role\nYou are agent Max\nYour job is to orchestrate the activities between different agents and then formulate a friendly response back to the user.\nYou should never write emails ,create content ,create summaroes yourself .Your job os to call agents and tools in the correct sequence.\nThink arefully about the sequence of events, Some tools might require you to first call another tool in order to pass the corrwct information\n\n\n#Additional information\n-You are talking to Leon\n-The current date and time is {{ $now.toString() }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        0
+      ],
+      "id": "875ccae1-d1d2-4ef0-9693-a8cb7f0ccdd4",
+      "name": "Supervisor"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool for all contact related actions.",
+        "workflowId": {
+          "__rl": true,
+          "value": "hNPhYHRDRuayuJTq",
+          "mode": "list",
+          "cachedResultName": "contacts"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        224
+      ],
+      "id": "bd4a72ef-b226-436a-b87e-822bd7682a8c",
+      "name": "Call n8n Workflow Tool1"
+    },
+    {
+      "parameters": {
+        "description": "Use this to any Email related work",
+        "workflowId": {
+          "__rl": true,
+          "value": "k57R3OVjNYgRPSHD",
+          "mode": "list",
+          "cachedResultName": "Email agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        224
+      ],
+      "id": "96f914fc-18c5-48ec-ab16-354df6d39aa1",
+      "name": "contacts"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool for any calendar related actions\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "ozIKrbwF27F1nVNM",
+          "mode": "list",
+          "cachedResultName": "Calendar agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        544,
+        224
+      ],
+      "id": "cc5fc6c9-6ed8-4afc-b193-6736fe2509fd",
+      "name": "calendar"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call n8n Workflow Tool1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "contacts": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4923ffed-584a-4a3c-aebf-ccb2cf0b2487",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9eb881b2a7e8bee3e23c5799d4aabf19569f7c3c35424a7931f509ce5d4695ab"
+  },
+  "id": "RuPL0gA3cRgxtgSS",
+  "tags": []
+}
