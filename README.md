@@ -1,0 +1,45 @@
+📧 AI-Powered Email & Calendar Automation with N8N
+This project is a smart automation system built with N8N, OpenAI GPT, and Google Workspace APIs. It can write, analyze, and reply to emails — and take real actions like adding events to Google Calendar — all from simple natural language commands.
+
+🚀 Features
+Natural Language Commands — Simply say what you need, and it’s done.
+
+Email Automation — Draft, analyze, and send emails automatically.
+
+Calendar Integration — Add events to Google Calendar instantly.
+
+Contact Lookup — Fetch recipient details from Google Contacts.
+
+Multi-Tool Orchestration — Connects multiple services in one workflow.
+
+💡 Example Command
+css
+Copy
+Edit
+"Write an email asking Nimisha if we could play squash tomorrow from 10 to 11 and add it to my calendar."
+Workflow:
+
+GPT drafts the email.
+
+Gmail sends it to the right contact.
+
+Google Calendar books the event.
+
+🛠 Tech Stack
+N8N – Workflow automation
+
+OpenAI GPT – Natural language understanding & generation
+
+Google Workspace APIs – Gmail, Calendar, Contacts
+
+📂 How It Works
+Trigger – Workflow starts when a user sends a command.
+
+Supervisor Agent – Routes the task to the correct tools.
+
+Memory – Stores conversation context for follow-ups.
+
+Actions – Executes via Google APIs.
+
+Response – Confirms the action back to the user.
+
